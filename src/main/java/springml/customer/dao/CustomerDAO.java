@@ -7,17 +7,24 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import springml.customer.Customer;
+import springml.customer.config.ApplicationConfig;
 @Repository
 public class CustomerDAO {
-	private static final String databaseName = "customer_master";
-	private static final String instanceConnectionName = "springmlproject:us-east1:customer";
-	private static final String username = "root";
-	private static final String password = "welcome1";
-
+	
+	@Autowired
+	private ApplicationConfig appConfig;
+	
 	private Connection getConnection() throws Exception {
+		String databaseName = appConfig.getMysqldb().getDatabase();
+		String instanceConnectionName = appConfig.getMysqldb().getProject() + ":" + 
+										appConfig.getMysqldb().getRegion() + ":" +
+										appConfig.getMysqldb().getInstance();
+		String username = appConfig.getMysqldb().getUser();
+		String password = appConfig.getMysqldb().getPassword();
 		String jdbcUrl = String.format(
 				"jdbc:mysql://google/%s?cloudSqlInstance=%s"
 						+ "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",

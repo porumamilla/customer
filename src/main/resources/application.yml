@@ -1,0 +1,32 @@
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
+    springml.customer: ERROR
+
+spring:
+  profiles:
+    active: "dev"
+  main:
+    banner-mode: "off"
+---
+spring:
+  profiles: dev
+mysqldb:
+  project: springmlproject
+  instance: customer
+  database: customer_master
+  region: us-east1
+  user: root
+  password: welcome1
+
+--- 
+spring:
+  profiles: test
+mysqldb:
+  project: springmlproject
+  instance: customer
+  database: customer_master
+  region: us-east1
+  user: root
+  password: welcome1
