@@ -17,8 +17,8 @@ mysqldb:
   instance: customer
   database: customer_master
   region: us-east1
-  user: root
-  password: welcome1
+  user: ${CLOUD_SQL_DEV_DB_USER}
+  password: ${CLOUD_SQL_DEV_DB_PASSWORD}
 
 --- 
 spring:
@@ -28,5 +28,5 @@ mysqldb:
   instance: customer
   database: customer_master
   region: us-east1
-  user: root
-  password: welcome1
+  user: ${CLOUD_SQL_TEST_DB_USER}
+  password: ${CLOUD_SQL_TEST_DB_PASSWORD}
