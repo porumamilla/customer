@@ -26,4 +26,6 @@ spec:
               secretKeyRef:
                 name: cloudsqldevdbpassword
                 key: CLOUD_SQL_DEV_DB_PASSWORD
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /home/raghavendra_porumamilla/SpringMLProject-12a525884889.json
           
