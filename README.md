@@ -40,7 +40,7 @@ For all other dependencies please refer pom.xml under project root directory
 
 4) Add the MySQL username & password to the application properties file <br/>
 spring.datasource.username=root <br/>
-spring.datasource.password=${CLOUD_SQL_DEV_DB_PASSWORD}
+spring.datasource.password=${CLOUD_SQL_DEV_DB_PASSWORD} # this is the environment variable
 
 ## Java programs that made up API
 1) CustomerController
@@ -48,6 +48,19 @@ spring.datasource.password=${CLOUD_SQL_DEV_DB_PASSWORD}
 2) CustomerDAO
    - This is the DAO implementation class that creates, updates & deletes the customer details. And this uses the spring JDBCTemplate out of box utitlity to interact with MySQL database.
    
+## Containerizing the application with docker
+To containerize the application please follow the steps
+1) Create a file with the name Dockerfile (Please refer the file created under project root directory)
+2) Add the dockerfile-maven-plugin to pom.xml (Please refer the file created under project root directory)
+3) Run maven command "mvn install dockerfile:build" to create the image in the local machine
+4) Run the following command on the local command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
+   - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' 
+   -v /Users/Raghu/gcp/:/var/gcp -e GOOGLE_APPLICATION_CREDENTIALS='/var/gcp/SpringMLProject-12a525884889.json' 
+   -t springml/customer
+5) Once the application runs successfully please access the URL http://localhost:8080/customer/all
+
+
+
 
 
 
