@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: customer-app
-        image: gcr.io/springmlproject/customer
+        image: gcr.io/springmlproject/customer:v1
         ports:
         - containerPort: 8080
           name: server
