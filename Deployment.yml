@@ -19,6 +19,9 @@ spec:
       containers:
       - name: customer-app
         image: gcr.io/springmlproject/customer:v1
+        volumeMounts:
+        - name: default-key
+          mountPath: /var/secrets/google
         ports:
         - containerPort: 8080
           name: server
