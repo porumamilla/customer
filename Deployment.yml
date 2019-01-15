@@ -12,6 +12,10 @@ spec:
       labels:
         app: customer-app
     spec:
+      volumes:
+      - name: default-key
+        secret:
+          secretName: default-key
       containers:
       - name: customer-app
         image: gcr.io/springmlproject/customer:v1
@@ -27,5 +31,5 @@ spec:
                 name: cloudsqldevdbpassword
                 key: CLOUD_SQL_DEV_DB_PASSWORD
           - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /home/raghavendra_porumamilla/SpringMLProject-12a525884889.json
+            value: /var/secrets/google/default-key.json
           
