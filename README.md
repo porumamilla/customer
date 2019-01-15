@@ -7,7 +7,7 @@ This is a sample API that uses Customer entity to describe CRUD operations like 
 used as a micro service container. JDBC Template from Spring framework is used to persist the data.
 
 MySQL [customer_master]> describe profile;<br/>
-|--------------|--------------|------|-----|-------------------|-----------------------------|
+
 | Field        | Type         | Null | Key | Default           | Extra                       |
 |--------------|--------------|------|-----|-------------------|-----------------------------|
 | email        | varchar(255) | NO   | PRI | NULL              |                             |
@@ -15,4 +15,3 @@ MySQL [customer_master]> describe profile;<br/>
 | lastName     | varchar(255) | YES  |     | NULL              |                             |
 | address      | varchar(500) | YES  |     | NULL              |                             |
 | last_updated | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-|--------------|--------------|------|-----|-------------------|-----------------------------|
