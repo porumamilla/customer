@@ -41,7 +41,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>springml</docker.image.prefix>
+		<docker.image.prefix>${env.GOOGLE_CLOUD_PROJECT}</docker.image.prefix>
 	</properties>
 
 	<build>
