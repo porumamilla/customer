@@ -6,6 +6,8 @@ This is a sample API that uses Customer entity to describe CRUD operations like 
 & deleteCustomer. Cloud SQL is used as a backend to store the Customer entity data. Spring boot & Docker container 
 used as a micro service container. JDBC Template from Spring framework is used to persist the data.
 
+##Sample Customer profile table created in Cloud MySQL 
+
 MySQL [customer_master]> describe profile;<br/>
 
 | Field        | Type         | Null | Key | Default           | Extra                       |
