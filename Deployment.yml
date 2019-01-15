@@ -24,6 +24,6 @@ spec:
         - name: CLOUD_SQL_DEV_DB_PASSWORD
           valueFrom:
             secretKeyRef:
-            name: cloudsqldevdbpassword
-            key: CLOUD_SQL_DEV_DB_PASSWORD
+              name: cloudsqldevdbpassword
+              key: CLOUD_SQL_DEV_DB_PASSWORD
           
