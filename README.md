@@ -74,7 +74,7 @@ To deploy the application on GKE please follow the steps (Note: Please make sure
 ### Deploying docker image on the GKE cluser
 
 1) Run the deploy command
-   - kubectl run hello-java --image=gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1 --port=8080
+   - kubectl apply -f Deployment.yml
 2) To view the deployment
    - kubectl get deployments
 3) To see the application instances
