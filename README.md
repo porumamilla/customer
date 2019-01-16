@@ -63,13 +63,27 @@ To deploy the application on GKE please follow the steps (Note: Please make sure
 ### Creating & Running docker image
 
 1) Clone this repository in Google cloud shell
-2) Run the maven command 
+2) Run the maven command to create the jar
    - mvn -DskipTests package
-3) Run the maven command 
+3) Run the maven command to push it to google container registry.
    - mvn -DskipTests com.google.cloud.tools:jib-maven-plugin:build -Dimage=gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1'
 4) Run the docker container and see it is working
-   - docker run -ti --rm -p 8080:8080 gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1
-5) open the localhost window in cloud shell
+   - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' -t springml/customer
+5) open the localhost window in cloud shell and append the URL with /customer/all. This should display all the data exists in profile table.
+
+### Deploying docker image on the GKE cluser
+
+1) Run the deploy command
+   - kubectl run hello-java --image=gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1 --port=8080
+2) To view the deployment
+   - kubectl get deployments
+3) To see the application instances
+   - kubectl get pods
+4) To make the deployment visible to outside world
+   - kubectl expose deployment dustomer --type=LoadBalancer
+5) To get the public IP please run the command
+   - kubectl get services
+6) To access the application please use the url http://{public-ip}:8080/customer/all
 
 
 
