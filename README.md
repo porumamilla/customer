@@ -21,7 +21,7 @@ MySQL [customer_master]> describe profile;<br/>
 
 ## Connecting to Cloud MySQL from Spring Boot
 
-Inorder to connect to the Cloud MySQL from SpringBoot application please follow the steps listed below.
+Inorder to connect to the Cloud MySQL from SpringBoot application please follow the steps listed below and these 3 steps is mandatory whether you are running the conainers in cloud or local.
 
 1) Clone the code from Google cloud github using the URL "git clone https://github.com/spring-cloud/spring-cloud-gcp"
 2) After cloning the repository go to the directory "spring-cloud-gcp"
@@ -42,23 +42,34 @@ spring.datasource.password=${CLOUD_SQL_DEV_DB_PASSWORD} # this is the environmen
 2) CustomerDAO
    - This is the DAO implementation class that creates, updates & deletes the customer details. And this uses the spring JDBCTemplate out of box utitlity to interact with MySQL database.
    
-## Containerizing the application with docker (Local machine or Google cloud shell)
+## Containerizing the application with docker (Note: This is only for Local machine)
 
-To containerize the application please follow the steps
-1) A file with the name Dockerfile is created under project root directory
-2) dockerfile-maven-plugin is added to pom.xml (Please refer the file created under project root directory)
-3) Run maven command "mvn install dockerfile:build" to create the image in the local machine
-4) Run the following command on the local command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
+To containerize the application please follow the steps. (Note: Please make sure the first 3 steps of section 'Connecting to Cloud MySQL from Spring Boot' are followed)
+
+1) Clone this repository in your lcoal machine
+2) A file with the name Dockerfile is created under project root directory
+3) dockerfile-maven-plugin is added to pom.xml (Please refer the file created under project root directory)
+4) Run maven command "mvn install dockerfile:build" to create the image in the local machine
+5) Run the following command on the local command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
    - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' 
    -v /Users/Raghu/gcp/:/var/gcp -e GOOGLE_APPLICATION_CREDENTIALS='/var/gcp/SpringMLProject-12a525884889.json' 
    -t springml/customer
-5) Once the application runs successfully please access the URL http://localhost:8080/customer/all
+6) Once the application runs successfully please access the URL http://localhost:8080/customer/all
 
 ## Deploying the application on Google Kubernetes Engine (GKE)
 
-To deploy the application on GKE please follow the steps
+To deploy the application on GKE please follow the steps (Note: Please make sure the first 3 steps of section 'Connecting to Cloud MySQL from Spring Boot' are followed)
 
-1) 
+### Creating & Running docker image
+
+1) Clone this repository in Google cloud shell
+2) Run the maven command 
+   - mvn -DskipTests package
+3) Run the maven command 
+   - mvn -DskipTests com.google.cloud.tools:jib-maven-plugin:build -Dimage=gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1'
+4) Run the docker container and see it is working
+   - docker run -ti --rm -p 8080:8080 gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1
+5) open the localhost window in cloud shell
 
 
 
