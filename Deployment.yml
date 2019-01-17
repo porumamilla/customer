@@ -18,7 +18,7 @@ spec:
           secretName: default-key
       containers:
       - name: customer-app
-        image: gcr.io/springmlproject/customer:v1
+        image: gcr.io/springmlproject/customer:0.0.1-SNAPSHOT
         volumeMounts:
         - name: default-key
           mountPath: /var/secrets/google
