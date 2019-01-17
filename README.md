@@ -42,15 +42,15 @@ spring.datasource.password=${CLOUD_SQL_DEV_DB_PASSWORD} # this is the environmen
 2) CustomerDAO
    - This is the DAO implementation class that creates, updates & deletes the customer details. And this uses the spring JDBCTemplate out of box utitlity to interact with MySQL database.
    
-## Containerizing the application with docker (Note: This is only for Local machine)
+## Containerizing the application and running on docker (Local machine or Google cloud shell)
 
 To containerize the application please follow the steps. (Note: Please make sure the first 3 steps of section 'Connecting to Cloud MySQL from Spring Boot' are followed)
 
-1) Clone this repository in your lcoal machine
+1) Clone this repository
 2) A file with the name Dockerfile is created under project root directory
 3) jib-maven-plugin is added to pom.xml (Please refer the file created under project root directory)
-4) Run maven command "mvn compile jib:dockerBuild" to create the image in the local machine
-5) Run the following command on the local command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
+4) Run maven command "mvn compile jib:dockerBuild" to create the image 
+5) Run the following command on the command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS. Note: this is only needed when you are running the docker container for testing before deploying it to GKE) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
    - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' 
    -v /Users/Raghu/gcp/:/var/gcp -e GOOGLE_APPLICATION_CREDENTIALS='/var/gcp/SpringMLProject-12a525884889.json' 
    -t springmlproject/customer:0.0.1-SNAPSHOT
@@ -63,12 +63,10 @@ To deploy the application on GKE please follow the steps (Note: Please make sure
 ### Creating & Running docker image
 
 1) Clone this repository in Google cloud shell
-2) Run the maven command to create the jar
-   - mvn -DskipTests package
-3) Run the maven command to push it to google container registry.
-   - mvn -DskipTests com.google.cloud.tools:jib-maven-plugin:build -Dimage=gcr.io/$GOOGLE_CLOUD_PROJECT/customer:v1'
+2) Run the maven command to push docker image to google container registry.
+   - mvn compile jib:build
 4) Run the docker container and see it is working
-   - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' -t springml/customer
+   - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' -t gcr.io/springmlproject/customer:0.0.1-SNAPSHOT
 5) open the localhost window in cloud shell and append the URL with /customer/all. This should display all the data exists in profile table.
 
 ### Deploying docker image on the GKE cluser
