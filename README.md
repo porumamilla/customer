@@ -48,12 +48,12 @@ To containerize the application please follow the steps. (Note: Please make sure
 
 1) Clone this repository in your lcoal machine
 2) A file with the name Dockerfile is created under project root directory
-3) dockerfile-maven-plugin is added to pom.xml (Please refer the file created under project root directory)
-4) Run maven command "mvn install dockerfile:build" to create the image in the local machine
+3) jib-maven-plugin is added to pom.xml (Please refer the file created under project root directory)
+4) Run maven command "mvn compile jib:dockerBuild" to create the image in the local machine
 5) Run the following command on the local command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
    - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' 
    -v /Users/Raghu/gcp/:/var/gcp -e GOOGLE_APPLICATION_CREDENTIALS='/var/gcp/SpringMLProject-12a525884889.json' 
-   -t springml/customer
+   -t springmlproject/customer:0.0.1-SNAPSHOT
 6) Once the application runs successfully please access the URL http://localhost:8080/customer/all
 
 ## Deploying the application on Google Kubernetes Engine (GKE)
