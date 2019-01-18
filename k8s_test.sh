@@ -103,3 +103,53 @@ for((i=0;i<${#workload_list_unique[@]};i++)); do
   fi
 done
 echo Test Two Complete
+
+printf '\n\n\n'
+sleep 3
+
+#exit
+
+
+echo Test Three: Logs Running
+printf '\n'
+sleep 2
+#get list of dameonset names
+ds_list=$(kubectl get ds --all-namespaces -o=jsonpath='{range .items[*]}|{.metadata.name}')
+#get count of dameonset names
+ds_counting=$(echo $ds_list | grep -o "|" | wc -l)
+#i="0"
+#for each daemonset run these commands
+echo Testing DaemonSets to make sure that logs are being recorded for all nodes
+printf '\n'
+for((i=0;i<$ds_counting;i++));do
+  #for daemonset i get the node selector --> looking for one equal to beta.kubernetes.io/fluentd-ds-ready:true
+  node_selector=$(kubectl get ds --all-namespaces -o=jsonpath='{.items['"$i"'].spec.template.spec.nodeSelector}')
+  #for daemonset i get the number of scheduled nodes
+  nodes_scheduled=$(kubectl get ds --all-namespaces -o=jsonpath='{.items['"$i"'].status.desiredNumberScheduled}')
+  #for daemonset i get the number of ready nodes
+  nodes_ready=$(kubectl get ds --all-namespaces -o=jsonpath='{.items['"$i"'].status.numberReady}')
+  #for daemonset i get the number of currently scheduled nodes
+  nodescurrently_scheduled=$(kubectl get ds --all-namespaces -o=jsonpath='{.items['"$i"'].status.currentNumberScheduled}')
+  #if node selector for node i is map[beta.kubernetes.io/fluentd-ds-ready:true and the number of scheduled, ready, and currently scheduled nodes are equal
+  if [[ $node_selector == "map[beta.kubernetes.io/fluentd-ds-ready:true]" && $nodes_scheduled == $nodes_ready && $nodes_ready == $nodescurrently_scheduled ]]
+  then
+    results="pass"
+  fi
+  #go through all daemonsets
+done
+sleep 2
+#if any of the daemonsets fulfilled those conditions then the test was successful
+if [[ $results=="pass" ]]
+then
+  echo Test Three: Pass
+  echo Logs are running for all nodes
+else
+  echo Test Three: Failure
+  echo Logs are not running for all nodes
+fi
+printf '\n'
+echo Test Three Complete
+printf '\n\n\n'
+sleep 3
+
+#exit
