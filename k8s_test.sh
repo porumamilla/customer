@@ -153,3 +153,45 @@ printf '\n\n\n'
 sleep 3
 
 #exit
+
+echo Test Four: Service Endpoint Check
+printf '\n'
+sleep 2
+#Count of total services
+services=(kubectl get svc -o=jsonpath='{.items[*]}')
+#service_count=("${#services[@]}")
+echo Getting and checking all "${#services[@]}" service endpoints
+printf '\n'
+
+for((i=0;i<${#services[@]};i++));do
+  #gets the name of the service
+  service_name=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.metadata.name}{end}')
+  #gets the service IP address
+  service_IP=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}{end}')
+  #gets the service endpoint (IP address and port)
+  service_endpoint=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}{end}')
+  #returns service name and endpoint
+  echo -e service: $service_name "\nendpoint for" $service_name: $service_endpoint
+  #checks the service endpoint to see if it is running
+  URL_check=$(curl -Is http://$service_endpoint | head -n 1)
+  #Does the service have an IP address
+  if [ ! $service_IP ];
+  then
+    echo Test Four: Failure for service $service_name
+    echo service $service_name does not have an IP address
+    printf '\n'
+  #Does the endpoint work
+  elif [[ ! $URL_check ]];
+  then
+    echo Test Four: Failure for service $service_name
+    echo the endpoint for service $service_name is unresponsive
+    printf '\n'
+  else
+    echo Test Four: Pass for service $service_name
+    echo service $service_name is running and serving traffic
+    printf '\n'
+  fi
+  #DELETE i=$[$i+1]
+  sleep 5
+done
+echo Test Four Complete
