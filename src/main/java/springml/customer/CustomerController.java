@@ -3,6 +3,9 @@ package springml.customer;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,8 @@ import springml.customer.dao.CustomerDAO;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
+	
+	private boolean serveRequests;
 	@Autowired
 	private CustomerDAO customerDAO;
 	
@@ -49,5 +54,18 @@ public class CustomerController {
 		customerDAO.deleteCustomer(customer);
 		System.out.println("Following Customer is deleted");
 		System.out.println(customer);
+	}
+	
+	@RequestMapping(value="/ready", method = RequestMethod.GET)
+	public ResponseEntity<?> isReady() {
+		if (serveRequests) {
+			return ResponseEntity.ok().body("Application is ready to serve"); 
+		} else {
+			throw new RuntimeException("Application is not ready yet");
+		}
+	}
+	@EventListener(ApplicationReadyEvent.class)
+	public void readyToServeRequests() {
+		this.serveRequests = true;
 	}
 }
