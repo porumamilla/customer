@@ -195,3 +195,49 @@ for((i=0;i<${#services[@]};i++));do
   sleep 5
 done
 echo Test Four Complete
+
+echo Test Five: Workload Revision History
+echo Checking workloads to see if revision history was set up during the workload deployment
+printf '\n'
+sleep 3
+#add the list of rollout histories for the list of unique workloads
+
+
+for((i=0;i<${#workload_list_unique[@]};i++));do
+  rollout_list=()
+  rollout_list+=$(kubectl rollout history ${workload_list_unique[$i]})
+  #sort and make the list of revisions unique
+  revision_list=($(echo $rollout_list | tr " " "\n" | sort -u))
+  #split the workload type/workloads by the delimiter
+
+  workload_full=($(echo ${workload_list_unique[$i]} | tr "/" "\n" ))
+  #get the workload type
+  workload_type=($(echo ${workload_full[0]} | tr '[:upper:]' '[:lower:]'))
+  workload_type+="s"
+  #get the workload name
+  workload_name=${workload_full[1]}
+
+  #trying to find out if the revision history items are just numbers. If revision history was properly set up then the item should have the revision item and action taken
+  for((f=0;f<${#revision_list[@]};f++));do
+    #exclude the workload type, name, and "REVISION" from this check
+    if [[ ${revision_list[$f]} == $workload_type ]] || [[ ${revision_list[$f]} == "\"$workload_name"\" ]] || [[ ${revision_list[$f]} == "REVISION" ]]
+    then
+      continue
+    #if the revision list items are just numbers (less those previous exclusions) then revision history was not set up
+    elif [[ ${revision_list[$f]} == [0-9]* ]]
+    then
+      results+=("Revision History is not on")
+    fi
+  done
+  printf '\n\n'
+  if [[ $results == "Revision History is not on" ]]; then
+    echo "Test Five: Failure for ${workload_list_unique[$i]}"
+    echo Workload Versioning was not set up during deployment
+  else
+    echo "Test Five: Pass for ${workload_list_unique[$i]}"
+    echo Workload Versioning was set up
+  fi
+  sleep 3
+done
+printf '\n\n'
+echo Test Five Complete
