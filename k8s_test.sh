@@ -167,9 +167,11 @@ for((i=0;i<${#services[@]};i++));do
   #gets the name of the service
   service_name=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.metadata.name}{end}')
   #gets the service IP address
-  service_IP=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}{end}')
+  #service_IP=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}{end}')
+  service_IP=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.clusterIP.ingress[0].ip}{end}')
   #gets the service endpoint (IP address and port)
-  service_endpoint=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}{end}')
+  #service_endpoint=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}{end}')
+  service_endpoint=$(kubectl get svc -o=jsonpath='{range .items['"$i"']}{.status.clusterIP.ingress[0].ip}:{.spec.ports[0].port}{end}')
   #returns service name and endpoint
   echo -e service: $service_name "\nendpoint for" $service_name: $service_endpoint
   #checks the service endpoint to see if it is running
