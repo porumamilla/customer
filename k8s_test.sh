@@ -241,3 +241,52 @@ for((i=0;i<${#workload_list_unique[@]};i++));do
 done
 printf '\n\n'
 echo Test Five Complete
+
+echo Test Six: Pod Resiliency pt 1
+echo 'Pod Restarts on Working Nodes'
+printf '\n'
+sleep 3
+#defines first pod and pod's node
+pod1_name=$(kubectl get pods -o=jsonpath='{.items[0].metadata.name}')
+node1_name=$(kubectl get pods -o=jsonpath='{.items[0].spec.nodeName}')
+
+echo Pod: $pod1_name is currently on node: $node1_name
+printf '\n'
+sleep 2
+echo This test will drain and cordon node: $node1_name
+printf '\n\n'
+sleep 2
+echo Pod: $pod1_name will be rebuilt on another node
+printf '\n\n\n'
+#cordon and drain first node
+#pod should be removed from node and should reappear on another node with the same name (StatefulSet pods keep the same names)
+kubectl cordon $node1_name
+printf '\n\n'
+sleep 2
+echo This next step will take some time to complete
+printf '\n\n'
+kubectl drain $node1_name --grace-period=900  --force --delete-local-data --ignore-daemonsets
+#find the pod again and the new node
+node1_name_new=$(kubectl get pod $pod1_name -o=jsonpath='{.spec.nodeName}')
+printf '\n'
+echo Pod: $pod1_name is now on node: $node1_name_new
+printf '\n'
+sleep 2
+if [[ $node1_name != $node1_name_new ]]
+then
+  echo Test Six: Pass
+  echo $pod1_name has been moved from $node1_name to $node1_name_new
+  printf '\n'
+else
+  echo Test Six: Failure
+  echo $pod1_name has not been moved to $node1_name_new
+  printf '\n'
+fi
+#uncordon first node (pod may eventually return to this node)
+sleep 2
+echo Restarting Node $node1_name
+printf '\n'
+kubectl uncordon $node1_name
+printf '\n'
+echo Test Six Complete
+printf '\n\n\n'

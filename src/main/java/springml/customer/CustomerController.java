@@ -64,6 +64,11 @@ public class CustomerController {
 			throw new RuntimeException("Application is not ready yet");
 		}
 	}
+	
+	@RequestMapping(value="/releaseAppResources", method = RequestMethod.GET)
+	public void releaseAppResources() {
+		//TODO: Add code below to release application resources
+	}
 	@EventListener(ApplicationReadyEvent.class)
 	public void readyToServeRequests() {
 		this.serveRequests = true;
