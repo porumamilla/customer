@@ -20,3 +20,5 @@ spec:
         env:
         - name: DELAY
           value: '30'
+        - name: NAMESPACE
+          value: dev
