@@ -7,7 +7,7 @@ metadata:
     kube-monkey/identifier: customer-deployment
     kube-monkey/mtbf: '2'
     kube-monkey/kill-mode: "fixed"
-    kube-monkey/kill-value: 1
+    kube-monkey/kill-value: '1'
 spec:
   selector:
     matchLabels:
