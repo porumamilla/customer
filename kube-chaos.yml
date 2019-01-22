@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: kubernetes-pod-chaos-monkey
-  namespace: kube-system
 spec:
   selector:
     matchLabels:
