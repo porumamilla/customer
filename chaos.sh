@@ -2,7 +2,7 @@
 # Randomly delete pods in a Kubernetes namespace.
 set -ex
 
-: ${DELAY:=30}
+: ${DELAY:=10}
 : ${NAMESPACE:=dev}
 
 while true; do
