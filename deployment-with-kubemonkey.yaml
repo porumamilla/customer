@@ -17,12 +17,9 @@ spec:
     metadata:
       labels:
         app: customer-app
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: customer-deployment-monkey
     spec:
-      template:
-        metadata:
-         labels:
-         kube-monkey/enabled: enabled
-         kube-monkey/identifier: customer-deployment-monkey
       volumes:
       - name: default-key
         secret:
