@@ -4,7 +4,7 @@ metadata:
   name: customer-deployment
   labels:
     kube-monkey/enabled: enabled
-    kube-monkey/identifier: customer-deployment-monkey
+    kube-monkey/identifier: customer-deployment
     kube-monkey/mtbf: '2'
     kube-monkey/kill-mode: "fixed"
     kube-monkey/kill-value: 1
@@ -18,7 +18,7 @@ spec:
       labels:
         app: customer-app
         kube-monkey/enabled: enabled
-        kube-monkey/identifier: customer-deployment-monkey
+        kube-monkey/identifier: customer-deployment
     spec:
       volumes:
       - name: default-key
