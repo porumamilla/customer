@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: kubernetes-pod-chaos-monkey
-        image: idoco/kube-chaos
+        image: jnewland/kubernetes-pod-chaos-monkey
         imagePullPolicy: Always
         env:
         - name: DELAY
