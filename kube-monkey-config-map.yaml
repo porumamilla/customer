@@ -7,7 +7,7 @@
   data:
     config.toml: |
       [kubemonkey]
-      run_hour = 20
-      start_hour = 21
-      end_hour = 22
+      run_hour = 15
+      start_hour = 16
+      end_hour = 17
       blacklisted_namespaces = ["kube-system", "prod"]
