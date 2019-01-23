@@ -7,11 +7,7 @@
   data:
     config.toml: |
       [kubemonkey]
-      run_hour = 17
-      start_hour = 18
-      end_hour = 19
+      run_hour = 20
+      start_hour = 20
+      end_hour = 21
       blacklisted_namespaces = ["kube-system", "prod"]
-      graceperiod_sec= 10
-      [debug]
-      enabled= true
-      schedule_immediate_kill= true
