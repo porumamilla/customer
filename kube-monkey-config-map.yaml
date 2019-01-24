@@ -7,8 +7,8 @@
   data:
     config.toml: |
       [kubemonkey]
-      run_hour = 14
-      start_hour = 15
-      end_hour = 16
+      run_hour = 15
+      start_hour = 16
+      end_hour = 20
       time_zone = "America/New_York"  
       blacklisted_namespaces = ["kube-system", "prod"]
