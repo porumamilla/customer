@@ -10,4 +10,5 @@
       run_hour = 12
       start_hour = 13
       end_hour = 14
+      time_zone = "America/New_York"  
       blacklisted_namespaces = ["kube-system", "prod"]
