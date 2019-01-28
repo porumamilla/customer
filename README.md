@@ -21,7 +21,7 @@ MySQL [customer_master]> describe profile;<br/>
 
 ## Connecting to Cloud MySQL from Spring Boot
 
-Inorder to connect to the Cloud MySQL from SpringBoot application please follow the steps listed below and these 3 steps is mandatory whether you are running the conainers in cloud or local.
+Inorder to connect to the Cloud MySQL from SpringBoot application please follow the steps listed below and these 3 steps are mandatory whether you are running the conainers in cloud or local.
 
 1) Clone the code from Google cloud github using the URL "git clone https://github.com/spring-cloud/spring-cloud-gcp"
 2) After cloning the repository go to the directory "spring-cloud-gcp"
@@ -53,7 +53,7 @@ To containerize the application please follow the steps. (Note: Please make sure
 5) Run the following command on the command/terminal. Please pay attention to the way we are passing environment variables(i.e., CLOUD_SQL_DEV_DB_PASSWORD, GOOGLE_APPLICATION_CREDENTIALS. Note: this is only needed when you are running the docker container for testing before deploying it to GKE) to the docker container. And the option SPRING_PROFILES_ACTIVE is used to tell the application what environment profile it needs to look for.
    - docker run -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=dev" -e CLOUD_SQL_DEV_DB_PASSWORD='welcome1' 
    -v /Users/Raghu/gcp/:/var/gcp -e GOOGLE_APPLICATION_CREDENTIALS='/var/gcp/SpringMLProject-12a525884889.json' 
-   -t springmlproject/customer:0.0.1-SNAPSHOT
+   -t gcr.io/springmlproject/customer:0.0.1-SNAPSHOT
 6) Once the application runs successfully please access the URL http://localhost:8080/customer/all
 
 ## Deploying the application on Google Kubernetes Engine (GKE)
