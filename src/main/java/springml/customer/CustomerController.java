@@ -21,7 +21,10 @@ public class CustomerController {
 	private boolean serveRequests;
 	@Autowired
 	private CustomerDAO customerDAO;
-	
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String welcomeMessage() {
+		return "Welcome to Customer API";
+	}
 	@RequestMapping(value="/{email}", method = RequestMethod.GET)
 	public Customer getCustomer(@PathVariable String email) throws Exception {
 		Customer customer = customerDAO.getCustomerByEmail(email);

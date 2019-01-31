@@ -58,6 +58,7 @@
 				<configuration>
 					<to>
 						<image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
+						<credHelper>gcr</credHelper>
 					</to>
 				</configuration>
 			</plugin>
